@@ -1,0 +1,12 @@
+---
+- name: Fully set up pianopi
+  hosts: pianopi
+  pre_tasks:
+    - name: Ensure acl is present
+      ansible.builtin.apt:
+        name: acl
+        state: present
+      become: true
+  roles:
+    - podman
+    - liano

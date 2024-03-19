@@ -1,0 +1,17 @@
+---
+- name: Ensure docker packages are uninstalled
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - docker-compose
+      - docker-doc
+      - podman-docker
+    state: absent
+  become: true 
+
+- name: Ensure podman is present
+  ansible.builtin.apt:
+    name:
+      - podman={{ podman_version }}
+    state: present
+  become: true

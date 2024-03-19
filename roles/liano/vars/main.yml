@@ -1,0 +1,5 @@
+---
+liano_image: docker.io/scddaniel/liano:0.0.1
+liano_container: liano
+liano_user: liano
+device_access_group: audio

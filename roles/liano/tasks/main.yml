@@ -1,0 +1,35 @@
+---
+- name: Make sure liano group is present
+  ansible.builtin.group:
+    name: "{{ liano_user }}"
+    state: present
+  become: true
+
+- name: Make sure liano user is present
+  ansible.builtin.user:
+    name: "{{ liano_user }}"
+    comment: User that runs liano
+    groups: "{{ device_access_group }}"
+  become: true
+
+- name: Make sure image is present
+  containers.podman.podman_image:
+    name: "{{ liano_image }}"
+    state: present
+    pull: true
+    force: true
+  become: true
+  become_user: "{{ liano_user }}"
+
+- name: Make sure liano container is present
+  containers.podman.podman_container:
+    name: "{{ liano_container }}"
+    state: started
+    image: "{{ liano_image }}"
+    device:
+      - "/dev/snd/seq:/dev/snd/seq"
+    restart_policy: always
+    group_add:
+      - "keep-groups"
+  become: true
+  become_user: "{{ liano_user }}"
